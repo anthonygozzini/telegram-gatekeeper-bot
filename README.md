@@ -4,15 +4,26 @@ A Telegram bot that screens people before they can join a private group. Applica
 questionnaire in a private chat with the bot; if they pass, they receive a **one-time invite link**
 that works for a single person only.
 
-## How it works (v1 — manual review)
+## How it works (v2 — automatic approval)
 
 1. The applicant sends `/start` and taps **Verify Yourself**.
-2. The bot asks for their main social media account, then asks whether they support the projects
-   they join (Yes/No).
-3. The answers are posted to a private **admin group** with **Approve** / **Reject** buttons.
-4. On approval the bot creates a single-use invite link to the private group and sends it to the
-   applicant; on rejection it tells them the request was denied. The admin message is updated with
-   the decision.
+2. The bot asks for their **Twitter/X profile URL** and checks that it is a valid `twitter.com` or
+   `x.com` profile link, asking again until it is.
+3. The bot asks whether they do their own research and only invest what they can afford to lose
+   (Yes/No).
+4. **Yes** → approved automatically: the bot creates a single-use invite link to the private group and
+   sends it. **No** → rejected automatically.
+5. Every decision is logged to the **admin group** with the applicant's name, username, user ID,
+   profile link, answer, decision and invite link.
+
+v1 (manual review with Approve/Reject buttons) is available as the `v1.0.0` release.
+
+## Join/leave logger (`log/`)
+
+A second, independent bot that watches the groups it is added to and records every member who joins
+or leaves: it stores the event in a local SQLite database (`users.db`) and posts a formatted notice
+to a log channel. Run it with its own token and `.env` from inside `log/` (`python log.py`); see
+`log/envexample`.
 
 ## Setup
 

@@ -1,0 +1,42 @@
+# Gatekeeper configuration. Copy to config.toml and adapt it.
+# Secrets and chat IDs (bot token, groups) live in .env, never in this file.
+
+# "auto": approve when the rules pass, reject when a required answer is wrong,
+#         and send anything with a warning signal to the admins.
+# "manual": the admins decide every request.
+mode = "auto"
+invite_expire_hours = 24        # one-time invite links stop working after this; 0 = never
+reapply_cooldown_hours = 72     # how long before the same person can apply again
+
+[texts]
+welcome = "Welcome! Answer a few questions to request access to the group."
+start_button = "Request access"
+approved = "You're in. Here is your one-time invite link: {link}"
+rejected = "Sorry, your request was not approved."
+in_review = "Thanks! An admin will review your request."
+
+[[questions]]
+id = "profile"
+prompt = "Send the link to your main social profile (X, Instagram, TikTok, YouTube, GitHub or LinkedIn)."
+type = "social_url"
+platforms = ["x", "instagram", "tiktok", "youtube", "github", "linkedin"]
+
+[[questions]]
+id = "rules"
+prompt = "Have you read the group rules, and do you agree to follow them? (yes/no)"
+type = "yes_no"
+approve_if = "yes"
+
+[[questions]]
+id = "why"
+prompt = "In one sentence: why do you want to join?"
+type = "text"
+min_length = 15
+
+[signals]
+# Each signal is "review" (send the request to the admins) or "ignore".
+no_username = "review"
+many_digits_username = "review"
+suspicious_name = "review"
+duplicate_profile = "review"
+suspicious_name_words = ["admin", "support", "official", "airdrop", "giveaway"]

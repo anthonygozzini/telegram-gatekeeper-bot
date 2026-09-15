@@ -1,3 +1,8 @@
 TOKEN=your-telegram-bot-token
 ADMIN_GROUP_ID=-100your_admin_group_id
 GROUP_CHAT_ID=-100your_private_group_id
+# Optional: a channel where every join and leave of the private group is posted
+LOG_CHANNEL_ID=
+# Optional
+DATABASE_PATH=gatekeeper.db
+CONFIG_PATH=config.toml

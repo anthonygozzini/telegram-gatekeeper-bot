@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Deterministic checks. "Done" means this prints OK.
+set -euo pipefail
+cd "$(dirname "$0")"
+PY="${PYTHON:-python3}"
+[ -x .venv/bin/python ] && PY=.venv/bin/python
+"$PY" -m compileall -q gatekeeper tests
+"$PY" -m pytest -q
+if git ls-files -z | xargs -0 grep -nIE '[0-9]{8,10}:AA[A-Za-z0-9_-]{30,}|-100[0-9]{6,}' 2>/dev/null; then
+  echo "FAIL: a bot token or a real chat ID is in a tracked file"
+  exit 1
+fi
+echo "OK"
